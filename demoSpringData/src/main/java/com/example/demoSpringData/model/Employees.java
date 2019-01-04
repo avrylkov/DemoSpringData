@@ -15,9 +15,13 @@ public class Employees {
     private Time hireDate;
     private Long salary;
     private Long commissionPct;
+    private String jobId;
+    private Boolean deleted;
 
     @Id
     @Column(name = "EMPLOYEE_ID")
+    @GeneratedValue(strategy=GenerationType.AUTO, generator="EMPLOYEES_SEQ")
+    @SequenceGenerator(name="EMPLOYEES_SEQ", sequenceName="EMPLOYEES_SEQ",allocationSize=1)
     public long getEmployeeId() {
         return employeeId;
     }
@@ -115,5 +119,25 @@ public class Employees {
     public int hashCode() {
 
         return Objects.hash(employeeId, firstName, lastName, email, phoneNumber, hireDate, salary, commissionPct);
+    }
+
+    @Basic
+    @Column(name = "JOB_ID")
+    public String getJobId() {
+        return jobId;
+    }
+
+    public void setJobId(String jobId) {
+        this.jobId = jobId;
+    }
+
+    @Basic
+    @Column(name = "DELETED")
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 }
