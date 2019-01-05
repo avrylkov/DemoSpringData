@@ -6,8 +6,8 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "EMPLOYEES")
-public class Employees {
-    private long employeeId;
+public class Employees implements BaseEntity{
+    private Long employeeId;
     private String firstName;
     private String lastName;
     private String email;
@@ -22,11 +22,11 @@ public class Employees {
     @Column(name = "EMPLOYEE_ID")
     @GeneratedValue(strategy=GenerationType.AUTO, generator="EMPLOYEES_SEQ")
     @SequenceGenerator(name="EMPLOYEES_SEQ", sequenceName="EMPLOYEES_SEQ",allocationSize=1)
-    public long getEmployeeId() {
+    public Long getEmployeeId() {
         return employeeId;
     }
 
-    public void setEmployeeId(long employeeId) {
+    public void setEmployeeId(Long employeeId) {
         this.employeeId = employeeId;
     }
 

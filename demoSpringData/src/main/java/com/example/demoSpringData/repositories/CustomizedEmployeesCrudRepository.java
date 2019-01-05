@@ -10,6 +10,6 @@ import java.util.Optional;
 @Repository
 public interface CustomizedEmployeesCrudRepository extends CrudRepository<Employees, Long>, CustomizedEmployees<Employees> {
 
-    Optional<Employees> findByFirstNameAndAndLastName(String firstName, String lastName);
+    Optional<Employees> findByFirstNameAndLastName(String firstName, String lastName);
     List<Employees> findFirst5ByFirstNameStartsWithOrderByFirstName(String firstNameStartsWith);
 }
