@@ -133,10 +133,12 @@ public class Employees implements BaseEntity{
 
     @Basic
     @Column(name = "DELETED")
+    @Override
     public Boolean getDeleted() {
         return deleted;
     }
 
+    @Override
     public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
     }

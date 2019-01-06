@@ -17,9 +17,5 @@ public class DemoSpringDataApplication {
 		SpringApplication.run(DemoSpringDataApplication.class, args);
 	}
 
-//	@Bean
-//	public SessionFactory sessionFactory(EntityManagerFactory emf) {
-//		return emf.unwrap(SessionFactory.class);
-//	}
 }
 

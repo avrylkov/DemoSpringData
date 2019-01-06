@@ -9,6 +9,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -76,6 +79,14 @@ public class DemoSpringDataApplicationTests {
 
 	@Test
 	@Transactional
+	public void testFindByFirstNameStartsWithOrderByFirstNamePage() {
+		List<Employees> list = employeesCrudRepository
+				.findByFirstNameStartsWith("A", PageRequest.of(2,3, Sort.by("firstName")));
+		list.forEach(e -> System.out.println(e.getFirstName() + " " +e.getLastName()));
+	}
+
+	@Test
+	@Transactional
 	@Commit
 	public void testDeleteEmployees() {
 		Optional<Employees> employeesOptional = employeesCrudRepository.findByFirstNameAndLastName("Alex", "Ivanov");
@@ -84,7 +95,6 @@ public class DemoSpringDataApplicationTests {
 
 	@Test
 	@Transactional
-	@Commit
 	public void testMaxSalaryEmployees() {
 		List<Employees> employees = employeesCrudRepository.getEmployeesMaxSalary();
 		employees.stream()
@@ -101,6 +111,14 @@ public class DemoSpringDataApplicationTests {
 		Example<Employees> example = Example.of(employees);
 		Optional<Employees> employeesOptional = employeesBaseRepository.findOne(example);
 		employeesOptional.ifPresent(employeesBaseRepository::delete);
+	}
+
+	@Test
+	@Transactional
+	public void testFindEmployeesWithMoreThanSalary() {
+		List<Employees> employees = employeesCrudRepository.findEmployeesWithMoreThanSalary(10000L, Sort.by("lastName"));
+		employees.stream()
+				.forEach(e -> System.out.println(e.getLastName() + " " + e.getFirstName() + " " + e.getSalary()));
 	}
 
 }
