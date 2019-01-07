@@ -3,6 +3,7 @@ package com.example.demoSpringData;
 import com.example.demoSpringData.model.Employees;
 import com.example.demoSpringData.repositories.CustomizedEmployeesCrudRepository;
 import com.example.demoSpringData.repositories.EmployeesBaseRepository;
+import com.example.demoSpringData.repositories.EmployeesEntityRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,6 +32,8 @@ public class DemoSpringDataApplicationTests {
 
 	@Autowired
     private CustomizedEmployeesCrudRepository employeesCrudRepository;
+	@Autowired
+	private EmployeesEntityRepository employeesEntityRepository;
 	@Resource
 	private EmployeesBaseRepository employeesBaseRepository;
 
@@ -116,9 +119,16 @@ public class DemoSpringDataApplicationTests {
 	@Test
 	@Transactional
 	public void testFindEmployeesWithMoreThanSalary() {
-		List<Employees> employees = employeesCrudRepository.findEmployeesWithMoreThanSalary(10000L, Sort.by("lastName"));
+		List<Employees> employees = employeesCrudRepository.findEmployeesWithMoreThanSalary(10_000L, Sort.by("lastName"));
 		employees.stream()
 				.forEach(e -> System.out.println(e.getLastName() + " " + e.getFirstName() + " " + e.getSalary()));
+	}
+
+	@Test
+	@Transactional
+	public void testEntityName() {
+		List<Employees> employeesMarked = employeesEntityRepository.findMarked(true);
+		employeesMarked.stream().forEach(e -> System.out.println(e.getLastName() + " " + e.getFirstName()));
 	}
 
 }
