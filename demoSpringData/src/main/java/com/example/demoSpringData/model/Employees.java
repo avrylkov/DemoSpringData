@@ -16,7 +16,7 @@ public class Employees implements BaseEntity{
     private Long salary;
     private Long commissionPct;
     private String jobId;
-    private Boolean deleted;
+    private Boolean deleted = false;
 
     @Id
     @Column(name = "EMPLOYEE_ID")

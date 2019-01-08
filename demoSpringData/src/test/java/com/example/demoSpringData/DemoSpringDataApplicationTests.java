@@ -56,9 +56,9 @@ public class DemoSpringDataApplicationTests {
 	@Commit
 	public void testAddEmployeesCrudRepository() {
 		Employees employees = new Employees();
-		employees.setEmail("em@mail.ru");
-		employees.setFirstName("Alex");
-		employees.setLastName("Ivanov");
+		employees.setEmail("ip@mail.ru");
+		employees.setFirstName("Igor");
+		employees.setLastName("Petrov");
 		employees.setJobId("IT_PROG");
 		employees.setHireDate(Time.valueOf(LocalTime.now()));
 		employeesCrudRepository.save(employees);
