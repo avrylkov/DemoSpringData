@@ -5,6 +5,6 @@
         <property name="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</property>
         <!--property name="connection.pool_size">1</property-->
         <property name="hibernate.ddl-auto">none</property>
-        <mapping class="com.example.demoSpringData.model.Employees"/>
+        <mapping class="com.example.demoSpringData.maps.Employees"/>
     </session-factory>
 </hibernate-configuration>
