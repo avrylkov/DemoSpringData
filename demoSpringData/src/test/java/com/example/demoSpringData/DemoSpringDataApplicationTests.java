@@ -1,6 +1,7 @@
 package com.example.demoSpringData;
 
 import com.example.demoSpringData.maps.Employees;
+import com.example.demoSpringData.maps.QEmployees;
 import com.example.demoSpringData.repositories.CustomizedEmployeesCrudRepository;
 import org.junit.Assert;
 import org.junit.Before;
@@ -11,10 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Time;
-import java.time.LocalTime;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -32,7 +31,7 @@ public class DemoSpringDataApplicationTests {
 	}
 
 	@Test
-	@Transactional
+	//@Transactional
 	public void testEmployeesCrudRepository() {
 		Optional<Employees> employeesOptional = employeesCrudRepository.findById(127L);
 
@@ -42,8 +41,8 @@ public class DemoSpringDataApplicationTests {
 				.map(e -> e.getFirstName() + " " + e.getLastName())
 				.orElse("not found"));
 
-		Employees landry = employeesCrudRepository.findFirstByLastName("Landry");
-		Assert.assertNotNull(landry);
+		//Employees landry = employeesCrudRepository.findFirstByLastName("Landry");
+		//Assert.assertNotNull(landry);
 
 		employeesOptional = employeesCrudRepository.findById(127L);
 		Assert.assertTrue(employeesOptional.isPresent());
@@ -51,16 +50,22 @@ public class DemoSpringDataApplicationTests {
 	}
 
 	@Test
-	@Transactional
 	@Commit
 	public void testAddEmployeesCrudRepository() {
 		Employees employees = new Employees();
-		employees.setEmail("ip@mail.ru");
-		employees.setFirstName("Igor");
-		employees.setLastName("Petrov");
+		employees.setEmployeeId(127L);
+		employees.setEmail("JLANDRY");
+		employees.setFirstName("James");
+		employees.setLastName("Landry");
 		employees.setJobId("IT_PROG");
-		employees.setHireDate(Time.valueOf(LocalTime.now()));
+		employees.setHireDate(new Date());
 		employeesCrudRepository.save(employees);
+
+        Optional<Employees> employeesOptional = employeesCrudRepository.findById(127L);
+        Assert.assertTrue(employeesOptional.isPresent());
+
+		Optional<Employees> james = employeesCrudRepository.findOne(QEmployees.employees.firstName.eq("James"));
+		Assert.assertTrue(james.isPresent());
 	}
 
 }
