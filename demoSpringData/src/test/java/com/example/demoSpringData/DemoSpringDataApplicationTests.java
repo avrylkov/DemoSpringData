@@ -1,14 +1,15 @@
 package com.example.demoSpringData;
 
-import com.example.demoSpringData.maps.Employees;
-import com.example.demoSpringData.maps.QEmployees;
+import com.example.demoSpringData.model.Employees;
 import com.example.demoSpringData.repositories.CustomizedEmployeesCrudRepository;
+import com.sun.xml.internal.ws.policy.AssertionValidationProcessor;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.keyvalue.core.KeyValueOperations;
 import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -25,47 +26,26 @@ public class DemoSpringDataApplicationTests {
 	@Autowired
     private CustomizedEmployeesCrudRepository employeesCrudRepository;
 
+	@Autowired
+	private KeyValueOperations keyValueTemplate;
+
 	@Before
 	public void init() {
 		Locale.setDefault(Locale.ENGLISH);
 	}
 
 	@Test
-	//@Transactional
-	public void testEmployeesCrudRepository() {
-		Optional<Employees> employeesOptional = employeesCrudRepository.findById(127L);
-
-		Assert.assertTrue(employeesOptional.isPresent());
-
-		System.out.println(employeesOptional
-				.map(e -> e.getFirstName() + " " + e.getLastName())
-				.orElse("not found"));
-
-		//Employees landry = employeesCrudRepository.findFirstByLastName("Landry");
-		//Assert.assertNotNull(landry);
-
-		employeesOptional = employeesCrudRepository.findById(127L);
-		Assert.assertTrue(employeesOptional.isPresent());
-
-	}
-
-	@Test
 	@Commit
 	public void testAddEmployeesCrudRepository() {
-		Employees employees = new Employees();
-		employees.setEmployeeId(127L);
-		employees.setEmail("JLANDRY");
-		employees.setFirstName("James");
-		employees.setLastName("Landry");
-		employees.setJobId("IT_PROG");
-		employees.setHireDate(new Date());
-		employeesCrudRepository.save(employees);
+		Optional<Employees> optionalEmployees = employeesCrudRepository.findById(127L);
+		Assert.assertTrue(optionalEmployees.isPresent());
 
-        Optional<Employees> employeesOptional = employeesCrudRepository.findById(127L);
+		keyValueTemplate.insert(optionalEmployees.get());
+        Optional<Employees> employeesOptional = keyValueTemplate.findById(127L, Employees.class);
         Assert.assertTrue(employeesOptional.isPresent());
 
-		Optional<Employees> james = employeesCrudRepository.findOne(QEmployees.employees.firstName.eq("James"));
-		Assert.assertTrue(james.isPresent());
+		//Optional<Employees> james = employeesCrudRepository.findOne(QEmployees.employees.firstName.eq("James"));
+		//Assert.assertTrue(james.isPresent());
 	}
 
 }
