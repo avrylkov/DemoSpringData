@@ -1,20 +1,17 @@
 package com.example.demoSpringData;
 
-import com.example.demoSpringData.model.Employees;
-import com.example.demoSpringData.repositories.CustomizedEmployeesCrudRepository;
-import com.sun.xml.internal.ws.policy.AssertionValidationProcessor;
+import com.example.demoSpringData.model.Card;
+import com.example.demoSpringData.model.Status;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.keyvalue.core.KeyValueOperations;
 import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Date;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -23,29 +20,42 @@ import java.util.Optional;
 @ContextConfiguration(classes = { DemoSpringDataApplication.class })
 public class DemoSpringDataApplicationTests {
 
-	@Autowired
-    private CustomizedEmployeesCrudRepository employeesCrudRepository;
-
-	@Autowired
-	private KeyValueOperations keyValueTemplate;
+    @Autowired
+    private DictionaryProvider dictionaryProvider;
 
 	@Before
 	public void init() {
 		Locale.setDefault(Locale.ENGLISH);
 	}
 
+	private void find() {
+		Optional<Status> status = dictionaryProvider.dictionaryById(Status.class, 1L);
+		Assert.assertTrue(status.isPresent());
+
+		Optional<Card> card = dictionaryProvider.dictionaryById(Card.class, 100L);
+		Assert.assertTrue(card.isPresent());
+	}
+
+
+	private void firstFind() {
+		find();
+	}
+
+	private void secondFind() {
+       find();
+	}
+
+	private void findByCode() {
+		Optional<Card> card = dictionaryProvider.dictionaryByCode(Card.class, "VISA");
+		Assert.assertTrue(card.isPresent());
+	}
+
 	@Test
-	@Commit
-	public void testAddEmployeesCrudRepository() {
-		Optional<Employees> optionalEmployees = employeesCrudRepository.findById(127L);
-		Assert.assertTrue(optionalEmployees.isPresent());
+	public void testDictionaryRepository() {
+		firstFind();
+		secondFind();
 
-		keyValueTemplate.insert(optionalEmployees.get());
-        Optional<Employees> employeesOptional = keyValueTemplate.findById(127L, Employees.class);
-        Assert.assertTrue(employeesOptional.isPresent());
-
-		//Optional<Employees> james = employeesCrudRepository.findOne(QEmployees.employees.firstName.eq("James"));
-		//Assert.assertTrue(james.isPresent());
+		findByCode();
 	}
 
 }

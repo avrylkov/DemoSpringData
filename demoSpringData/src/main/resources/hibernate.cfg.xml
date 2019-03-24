@@ -6,5 +6,7 @@
         <!--property name="connection.pool_size">1</property-->
         <property name="hibernate.ddl-auto">none</property>
         <mapping class="com.example.demoSpringData.model.Employees"/>
+        <mapping class="com.example.demoSpringData.model.Status"/>
+        <mapping class="com.example.demoSpringData.model.Card"/>
     </session-factory>
 </hibernate-configuration>
