@@ -42,14 +42,14 @@ public class DictionaryProvider {
     public <T> Optional<T> dictionaryById(Class<T> clazz, long id) {
         Optional<T> optDictionary = keyValueTemplate.findById(id, clazz);
         if (optDictionary.isPresent()) {
-            logger.info("optDictionary {} found in keyValueTemplate", optDictionary.get());
+            logger.info("Dictionary {} found in keyValueTemplate", optDictionary.get());
             return optDictionary;
         }
 
         CrudRepository crudRepository = repositoryMap.get(clazz);
         optDictionary = crudRepository.findById(id);
         keyValueTemplate.insert(optDictionary.get());
-        logger.info("optDictionary {} insert in keyValueTemplate", optDictionary.get());
+        logger.info("Dictionary {} insert in keyValueTemplate", optDictionary.get());
 
         return optDictionary;
     }
